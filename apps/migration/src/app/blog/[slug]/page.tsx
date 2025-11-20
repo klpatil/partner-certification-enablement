@@ -1,6 +1,7 @@
 'use cache';
 import { cacheTag } from 'next/cache';
 import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 import { getBlogPostBySlug, getFeaturedBlogPosts } from '@/api';
 import BlogPosts from '@/components/blog-posts';
 
@@ -29,7 +30,9 @@ export default async function BlogPost({
 
       <div className="mt-16 border-t pt-16">
         <h2 className="mb-8 font-bold text-3xl">Featured Posts</h2>
-        <BlogPosts posts={featuredPosts} />
+        <Suspense fallback={<div>Loading featured posts...</div>}>
+          <BlogPosts posts={featuredPosts} />
+        </Suspense>
       </div>
     </div>
   );

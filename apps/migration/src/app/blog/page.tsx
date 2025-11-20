@@ -34,7 +34,9 @@ export default async function BlogPage({
         </p>
       </header>
 
-      <CategoryFilter categories={categories} />
+      <Suspense fallback={<div>Loading categories...</div>}>
+        <CategoryFilter categories={categories} />
+      </Suspense>
 
       <Suspense fallback={<div>Loading posts...</div>}>
         <BlogPostCached searchParams={searchParams} />
