@@ -54,7 +54,18 @@ function generateData(postCount = 50) {
     },
   ];
 
-  const blogPosts = [];
+  const blogPosts: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    excerpt: string;
+    content: string;
+    category: string;
+    author: { name: string; avatar: string };
+    publishedAt: string;
+    readTime: number;
+    imageUrl: string;
+  }> = [];
 
   for (let i = 0; i < postCount; i++) {
     const selectedCategory = faker.helpers.arrayElement(categories);
@@ -90,6 +101,8 @@ function generateData(postCount = 50) {
 const { categories: CATEGORIES, blogPosts: BLOG_POSTS } = generateData(50);
 
 export async function getBlogPosts(category?: string): Promise<BlogPost[]> {
+  'use cache';
+  cacheLife('minutes');
   console.info(
     `[API] Fetching blog posts${category ? ` for category: ${category}` : ''} (250ms delay)`
   );
@@ -104,6 +117,8 @@ export async function getBlogPosts(category?: string): Promise<BlogPost[]> {
 }
 
 export async function getFeaturedBlogPosts(): Promise<BlogPost[]> {
+  'use cache';
+  cacheLife('minutes');
   console.info('[API] Fetching featured posts (250ms delay)');
 
   await delay(1500);
@@ -124,6 +139,8 @@ export async function getCategories(): Promise<Category[]> {
 export async function getBlogPostBySlug(
   slug: string
 ): Promise<BlogPost | null> {
+  'use cache';
+  cacheLife('minutes');
   console.info(`[API] Fetching blog post with slug: ${slug} (250ms delay)`);
 
   await delay(250);
