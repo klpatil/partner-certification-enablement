@@ -1,9 +1,9 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
-import type {BlogPost} from "@/api";
+import type { BlogPost } from '@/api';
 
-export default function BlogPosts({posts}: {posts: BlogPost[]}) {
+export default function BlogPosts({ posts }: { posts: BlogPost[] }) {
   if (posts.length === 0) {
     return (
       <div className="py-12 text-center">
@@ -15,29 +15,31 @@ export default function BlogPosts({posts}: {posts: BlogPost[]}) {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {posts.map((post) => (
-        <article key={post.id} className="group relative flex h-full flex-col">
+        <article className="group relative flex h-full flex-col" key={post.id}>
           <Link className="block h-full" href={`/blog/${post.slug}`}>
-            <div className="bg-card flex h-full flex-col overflow-hidden rounded-lg border shadow-sm">
-              <div className="bg-muted relative aspect-video overflow-hidden">
+            <div className="flex h-full flex-col overflow-hidden rounded-lg border bg-card shadow-sm">
+              <div className="relative aspect-video overflow-hidden bg-muted">
                 <Image
-                  fill
                   alt={post.title}
                   className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                  fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   src={post.imageUrl}
                 />
               </div>
               <div className="flex flex-1 flex-col gap-4 p-6">
                 <div className="flex items-center gap-2 text-xs">
-                  <span className="bg-muted text-foreground rounded px-2 py-1 font-medium">
+                  <span className="rounded bg-muted px-2 py-1 font-medium text-foreground">
                     {post.category}
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col gap-2">
-                  <h2 className="group-hover:text-primary line-clamp-2 text-xl font-semibold tracking-tight transition-colors">
+                  <h2 className="line-clamp-2 font-semibold text-xl tracking-tight transition-colors group-hover:text-primary">
                     {post.title}
                   </h2>
-                  <p className="text-muted-foreground line-clamp-3 text-sm">{post.excerpt}</p>
+                  <p className="line-clamp-3 text-muted-foreground text-sm">
+                    {post.excerpt}
+                  </p>
                 </div>
                 <div className="mt-auto flex items-center gap-3">
                   <Image
@@ -50,11 +52,14 @@ export default function BlogPosts({posts}: {posts: BlogPost[]}) {
                   <div className="text-sm">
                     <p className="font-medium">{post.author.name}</p>
                     <p className="text-muted-foreground text-xs">
-                      {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
+                      {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
                       })}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      Cached at: {new Date().toISOString()}
                     </p>
                   </div>
                 </div>
@@ -70,25 +75,25 @@ export default function BlogPosts({posts}: {posts: BlogPost[]}) {
 export function BlogPostsSkeleton() {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {Array.from({length: 6}).map((_, index) => (
-        <div key={index} className="bg-card overflow-hidden rounded-lg border">
-          <div className="bg-muted aspect-video animate-pulse" />
+      {Array.from({ length: 6 }).map((_, index) => (
+        <div className="overflow-hidden rounded-lg border bg-card" key={index}>
+          <div className="aspect-video animate-pulse bg-muted" />
           <div className="p-6">
             <div className="mb-3 flex items-center gap-2">
-              <div className="bg-muted h-4 w-20 animate-pulse rounded" />
-              <div className="bg-muted h-4 w-16 animate-pulse rounded" />
+              <div className="h-4 w-20 animate-pulse rounded bg-muted" />
+              <div className="h-4 w-16 animate-pulse rounded bg-muted" />
             </div>
             <div className="mb-4 flex flex-col gap-2">
-              <div className="bg-muted h-6 animate-pulse rounded" />
-              <div className="bg-muted h-6 animate-pulse rounded" />
+              <div className="h-6 animate-pulse rounded bg-muted" />
+              <div className="h-6 animate-pulse rounded bg-muted" />
             </div>
-            <div className="bg-muted mb-1 h-4 animate-pulse rounded" />
-            <div className="bg-muted mb-6 h-4 w-3/4 animate-pulse rounded" />
+            <div className="mb-1 h-4 animate-pulse rounded bg-muted" />
+            <div className="mb-6 h-4 w-3/4 animate-pulse rounded bg-muted" />
             <div className="flex items-center gap-3">
-              <div className="bg-muted h-8 w-8 animate-pulse rounded-full" />
+              <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />
               <div>
-                <div className="bg-muted mb-1 h-4 w-24 animate-pulse rounded" />
-                <div className="bg-muted h-3 w-20 animate-pulse rounded" />
+                <div className="mb-1 h-4 w-24 animate-pulse rounded bg-muted" />
+                <div className="h-3 w-20 animate-pulse rounded bg-muted" />
               </div>
             </div>
           </div>

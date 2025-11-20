@@ -1,55 +1,55 @@
-import {faker} from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
+import { cacheLife } from 'next/cache';
+import { delay } from './utils';
 
-import {delay} from "./utils";
+export type Category = ReturnType<typeof generateData>['categories'][number];
 
-export type Category = ReturnType<typeof generateData>["categories"][number];
+export type BlogPost = ReturnType<typeof generateData>['blogPosts'][number];
 
-export type BlogPost = ReturnType<typeof generateData>["blogPosts"][number];
-
-function generateData(postCount: number = 50) {
+function generateData(postCount = 50) {
   faker.seed(123);
 
   const categories = [
     {
       id: faker.string.uuid(),
-      name: "Advertising",
-      slug: "advertising",
-      description: "Advertising solutions and insights",
+      name: 'Advertising',
+      slug: 'advertising',
+      description: 'Advertising solutions and insights',
       postCount: 0,
     },
     {
       id: faker.string.uuid(),
-      name: "Aviation",
-      slug: "aviation",
-      description: "Intelligence for aviation industry",
+      name: 'Aviation',
+      slug: 'aviation',
+      description: 'Intelligence for aviation industry',
       postCount: 0,
     },
     {
       id: faker.string.uuid(),
-      name: "Cross-industry",
-      slug: "cross-industry",
-      description: "Solutions across multiple sectors",
+      name: 'Cross-industry',
+      slug: 'cross-industry',
+      description: 'Solutions across multiple sectors',
       postCount: 0,
     },
     {
       id: faker.string.uuid(),
-      name: "Government & Defense",
-      slug: "government-defense",
-      description: "Intelligence for public sector",
+      name: 'Government & Defense',
+      slug: 'government-defense',
+      description: 'Intelligence for public sector',
       postCount: 0,
     },
     {
       id: faker.string.uuid(),
-      name: "Media",
-      slug: "media",
-      description: "Content and broadcasting solutions",
+      name: 'Media',
+      slug: 'media',
+      description: 'Content and broadcasting solutions',
       postCount: 0,
     },
     {
       id: faker.string.uuid(),
-      name: "Data & Intelligence",
-      slug: "data-intelligence",
-      description: "Advanced data and analytics",
+      name: 'Data & Intelligence',
+      slug: 'data-intelligence',
+      description: 'Advanced data and analytics',
       postCount: 0,
     },
   ];
@@ -65,30 +65,33 @@ function generateData(postCount: number = 50) {
       title: `${title} in ${selectedCategory.name}`,
       slug: faker.helpers.slugify(title).toLowerCase(),
       excerpt: faker.lorem.paragraph(2),
-      content: faker.lorem.paragraphs(5, "\n\n"),
+      content: faker.lorem.paragraphs(5, '\n\n'),
       category: selectedCategory.slug,
       author: {
         name: faker.person.fullName(),
         avatar: faker.image.avatar(),
       },
-      publishedAt: faker.date.recent({days: 30}).toISOString(),
-      readTime: faker.number.int({min: 3, max: 12}),
-      imageUrl: faker.image.urlPicsumPhotos({width: 800, height: 400}),
+      publishedAt: faker.date.recent({ days: 30 }).toISOString(),
+      readTime: faker.number.int({ min: 3, max: 12 }),
+      imageUrl: faker.image.urlPicsumPhotos({ width: 800, height: 400 }),
     });
 
     selectedCategory.postCount++;
   }
 
-  blogPosts.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+  blogPosts.sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  );
 
-  return {categories, blogPosts};
+  return { categories, blogPosts };
 }
 
-const {categories: CATEGORIES, blogPosts: BLOG_POSTS} = generateData(50);
+const { categories: CATEGORIES, blogPosts: BLOG_POSTS } = generateData(50);
 
 export async function getBlogPosts(category?: string): Promise<BlogPost[]> {
   console.info(
-    `[API] Fetching blog posts${category ? ` for category: ${category}` : ""} (250ms delay)`,
+    `[API] Fetching blog posts${category ? ` for category: ${category}` : ''} (250ms delay)`
   );
 
   await delay(250);
@@ -101,7 +104,7 @@ export async function getBlogPosts(category?: string): Promise<BlogPost[]> {
 }
 
 export async function getFeaturedBlogPosts(): Promise<BlogPost[]> {
-  console.info("[API] Fetching featured posts (250ms delay)");
+  console.info('[API] Fetching featured posts (250ms delay)');
 
   await delay(1500);
 
@@ -109,14 +112,18 @@ export async function getFeaturedBlogPosts(): Promise<BlogPost[]> {
 }
 
 export async function getCategories(): Promise<Category[]> {
-  console.info("[API] Fetching categories (250ms delay)");
+  'use cache';
+  cacheLife('minutes');
+  console.info('[API] Fetching categories (250ms delay)');
 
   await delay(250);
 
   return CATEGORIES;
 }
 
-export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+export async function getBlogPostBySlug(
+  slug: string
+): Promise<BlogPost | null> {
   console.info(`[API] Fetching blog post with slug: ${slug} (250ms delay)`);
 
   await delay(250);

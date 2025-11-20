@@ -1,10 +1,7 @@
-import type {NextConfig} from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  experimental: {
-    reactCompiler: true,
-    cacheComponents: false,
-  },
+  cacheComponents: true,
   logging: {
     fetches: {
       fullUrl: true,
@@ -13,16 +10,16 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "picsum.photos",
+        protocol: 'https',
+        hostname: 'picsum.photos',
       },
       {
-        protocol: "https",
-        hostname: "avatars.githubusercontent.com",
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
       },
       {
-        protocol: "https",
-        hostname: "cdn.jsdelivr.net",
+        protocol: 'https',
+        hostname: 'cdn.jsdelivr.net',
       },
     ],
   },
