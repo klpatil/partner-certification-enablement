@@ -43,6 +43,9 @@ export default async function BlogPost({
 }) {
   'use cache';
   const { slug } = await params;
-
-  return <BlogPostCached slug={slug} />;
+  return (
+    <Suspense fallback={<div>Loading a blog post...</div>}>
+      <BlogPostCached slug={slug} />
+    </Suspense>
+  );
 }
